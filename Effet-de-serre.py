@@ -43,15 +43,17 @@ def Bloc_effet_de_serre(T, Fd, Fi, h, sigma):
     x0 = np.array([1, 1, 1, 1, 1])
 
     # Calcul des racines du systèmes
-    sol = sp_op.fsolve(sys, x0)
+    sol = sp_op.root(sys, x0)
+    # sol = sp_op.fsolve(sys, x0)
 
-    return sol[0]
+    return sol.x[0]
+    # return sol[0]
 
 
 # variables d'entrée
-T = float(input("T = "))
-Fd = float(input("Fd = "))
-Fi = float(input("Fi = "))
+T = float(input("T (Celsuis)= ")) + 273.15
+Fd = float(input("Fd (Watts par mètre carré)= "))
+Fi = float(input("Fi (Watts par mètre carré)= "))
 
 # Print de la puissance de cette serre
-print(Bloc_effet_de_serre(T, Fd, Fi, CONST_h, CONST_sigma), "Watts par mètre carré")
+print("P =", Bloc_effet_de_serre(T, Fd, Fi, CONST_h, CONST_sigma))
