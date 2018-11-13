@@ -72,6 +72,21 @@ def Bloc_effet_de_serre(T, Fd, Fi, c):
     return sol.x
 
 
+def imprimer(T, Fd, Fi, constantes):
+    # Print de la puissance de cette serre
+    res = Bloc_effet_de_serre(T, Fd, Fi, constantes)
+    print("P  =\t", res[0], "\nTs =\t", res[1], "\nTp =\t", res[2], "\nFs =\t", res[3], "\nFp =\t", res[4], "\nRa =\t",
+          res[5], "\nNu =\t", res[6], "\nh  =\t", res[7], )
+
+
+def test2(constantes):
+    T = 65 + 273.15
+    Fd = 400
+    Fi = 400
+
+    imprimer(T, Fd, Fi, constantes)
+
+
 def test(constantes):
     # variables d'entrée
     T = float(input("T (Celsuis) = ")) + 273.15
@@ -79,10 +94,25 @@ def test(constantes):
     Fd = float(input("Fd (Watts par mètre carré)= "))
     Fi = float(input("Fi (Watts par mètre carré)= "))
 
-    # Print de la puissance de cette serre
-    res = Bloc_effet_de_serre(T, Fd, Fi, constantes)
-    print("P  =\t", res[0], "\nTs =\t", res[1], "\nTp =\t", res[2], "\nFs =\t", res[3], "\nFp =\t", res[4], "\nRa =\t",
-          res[5], "\nNu =\t", res[6], "\nh  =\t", res[7], )
+    imprimer(T, Fd, Fi, constantes)
 
 
-test(constantes340)
+def main(mode):
+    print("\n", "#" * 50, "\n", "#" * 50, "\n")
+
+    if mode == "test":
+        test2(constantes300)
+        print("\n", "_"*50, "\n")
+        test2(constantes310)
+        print("\n", "_"*50, "\n")
+        test2(constantes320)
+        print("\n", "_"*50, "\n")
+        test2(constantes330)
+        print("\n", "_"*50, "\n")
+        test2(constantes340)
+    elif mode == "input":
+        test(constantes)
+    else:
+        print("Erreur")
+
+main(input())
