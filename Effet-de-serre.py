@@ -2,12 +2,17 @@ import numpy as np
 import scipy.optimize as sp_op
 import scipy.constants as cste
 
-#    Constantes :sigma,      v,        alpha,    Pr,    g,       L,   k,       h
-constantes300 = [cste.sigma, 1.578e-5, 2.213e-5, 0.713, 9.80665, 0.2, 0.02623, 4]
-constantes310 = [cste.sigma, 1.659e-5, 2.340e-5, 0.709, 9.80665, 0.2, 0.02684, 4]
-constantes320 = [cste.sigma, 1.754e-5, 2.476e-5, 0.708, 9.80665, 0.2, 0.02753, 4]
-constantes330 = [cste.sigma, 1.851e-5, 2.616e-5, 0.708, 9.80665, 0.2, 0.02821, 4]
-constantes340 = [cste.sigma, 1.951e-5, 2.821e-5, 0.707, 9.80665, 0.2, 0.02888, 4]
+L = 0.8  # Dimensions de la boîte
+g = 9.80665  # accélération gravifique
+sigma = cste.sigma
+h = 4  # Valeur test
+
+# Constantes :   sigma, v,        alpha,    Pr,    g, L, k,       h
+constantes300 = [sigma, 1.578e-5, 2.213e-5, 0.713, g, L, 0.02623, h]
+constantes310 = [sigma, 1.659e-5, 2.340e-5, 0.709, g, L, 0.02684, h]
+constantes320 = [sigma, 1.754e-5, 2.476e-5, 0.708, g, L, 0.02753, h]
+constantes330 = [sigma, 1.851e-5, 2.616e-5, 0.708, g, L, 0.02821, h]
+constantes340 = [sigma, 1.951e-5, 2.821e-5, 0.707, g, L, 0.02888, h]
 
 
 def Bloc_effet_de_serre(T, Fd, Fi, c):
@@ -17,6 +22,7 @@ def Bloc_effet_de_serre(T, Fd, Fi, c):
     :param T: Température que l'on veut atteindre dans la serre
     :param Fd: Flux solaire direct
     :param Fi: Flux solaire indirect
+    :param c: constantes : sigma, v, alpha, Pr, g, L, k, h
     :return P: Puissance développée par la serre
     """
     # Constantes convection
@@ -27,7 +33,7 @@ def Bloc_effet_de_serre(T, Fd, Fi, c):
     g = c[4]
     L = c[5]
     k = c[6]
-    beta = 1 / T
+    beta = (1 / T)
 
     # h = c[7]
 
@@ -57,14 +63,15 @@ def Bloc_effet_de_serre(T, Fd, Fi, c):
 
         # Equations de a convection
         E[5] = (h * L / k) - Nu
-        E[6] = (g * beta * (((Ts + Tp) / 2) - T) * L ** 3 / (alpha * v)) - Ra
+        E[6] = ((g * beta * (((Ts + Tp) / 2) - T) * L ** 3) / (alpha * v)) - Ra
         # E[7] = 0.58 * Ra ** (1 / 5) - Nu
-        E[7] = (0.14 * Ra ** (1 / 3) * ((1 + 0.0107 * Pr) / (1 + 0.01 * Pr))) - Nu
+        E[7] = (0.14 * (Ra ** (1 / 3)) * ((1 + 0.0107 * Pr) / (1 + 0.01 * Pr))) - Nu
+        # E[7] = (0.58 * (Ra ** (1 / 5))) - Nu
 
         return E
 
     # Matrice d'initialisation qui va servir de base pour trouver les racines du système
-    x0 = np.array([100, 100, 100, 500, 300, 1, 1, 5])
+    x0 = np.array([100, 300, 300, 400, 400, 1, 1, 4])
 
     # Calcul des racines du systèmes
     sol = sp_op.root(sys, x0)
@@ -75,14 +82,21 @@ def Bloc_effet_de_serre(T, Fd, Fi, c):
 def imprimer(T, Fd, Fi, constantes):
     # Print de la puissance de cette serre
     res = Bloc_effet_de_serre(T, Fd, Fi, constantes)
-    print("P  =\t", res[0], "\nTs =\t", res[1], "\nTp =\t", res[2], "\nFs =\t", res[3], "\nFp =\t", res[4], "\nRa =\t",
-          res[5], "\nNu =\t", res[6], "\nh  =\t", res[7], )
+    print("P  =\t", res[0],
+          "\nTs =\t", res[1],
+          "\nTp =\t", res[2],
+          "\nFs =\t", res[3],
+          "\nFp =\t", res[4],
+          "\nRa =\t", res[5],
+          "\nNu =\t", res[6],
+          "\nh  =\t", res[7], )
+    # print(res)
 
 
 def test2(constantes):
     T = 65 + 273.15
-    Fd = 400
-    Fi = 400
+    Fd = 600
+    Fi = 200
 
     imprimer(T, Fd, Fi, constantes)
 
@@ -102,17 +116,18 @@ def main(mode):
 
     if mode == "test":
         test2(constantes300)
-        print("\n", "_"*50, "\n")
+        print("\n", "_" * 50, "\n")
         test2(constantes310)
-        print("\n", "_"*50, "\n")
+        print("\n", "_" * 50, "\n")
         test2(constantes320)
-        print("\n", "_"*50, "\n")
+        print("\n", "_" * 50, "\n")
         test2(constantes330)
-        print("\n", "_"*50, "\n")
+        print("\n", "_" * 50, "\n")
         test2(constantes340)
     elif mode == "input":
-        test(constantes)
+        test(constantes330)
     else:
         print("Erreur")
+
 
 main(input())
