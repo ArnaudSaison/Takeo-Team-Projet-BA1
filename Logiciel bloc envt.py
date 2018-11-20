@@ -22,8 +22,8 @@ import scipy.constants as cste
 # 1) on définit d'abord les constantes que l'on va utiliser :
 
 T0     = 333.15          # température dont on connait la pression de saturation (60°C) [K]
-R      = 8.314           # constante des gaz parfaits [J/K]
-PATM   = 101325          # pression atmosphérique [Pa]
+R      = cste.R           # constante des gaz parfaits [J/K]
+PATM   = cste.atm         # pression atmosphérique [Pa]
 LAMBDA = 42440           # chaleur latente molaire de vaporisation de l'eau [J/mol]
 SIGMA  = cste.sigma      # constante de Stefan-Boltzmann [W/m²K⁴]
 
