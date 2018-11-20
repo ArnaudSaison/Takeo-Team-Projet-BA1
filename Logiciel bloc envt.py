@@ -17,6 +17,7 @@ CODE DU BLOC ENVIRONNEMENT
 """
 
 import math
+import scipy.constants as cste
 
 # 1) on définit d'abord les constantes que l'on va utiliser :
 
@@ -24,7 +25,7 @@ T0     = 333.15          # température dont on connait la pression de saturatio
 R      = 8.314           # constante des gaz parfaits [J/K]
 PATM   = 101325          # pression atmosphérique [Pa]
 LAMBDA = 42440           # chaleur latente molaire de vaporisation de l'eau [J/mol]
-SIGMA  = 5.6704*10**(-8) # constante de Stefan-Boltzmann [W/m²K⁴]
+SIGMA  = cste.sigma      # constante de Stefan-Boltzmann [W/m²K⁴]
 
 
 
