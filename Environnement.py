@@ -43,7 +43,7 @@ def FPsat(T) :
 
    # on attribue des valeurs par défaut pour les grandeurs dans le cas où elles ne sont pas données (Tamb de 30°C, Esol de 19.6 MJ/m², HR de 70%)
 
-def environnement(Tamb=303.15, Esol=19.6, Texp=12, HR=80):
+def environnement(Tamb=303.15, Esol=20, Texp=12, HR=80):
     HR = HR/100                        #passage pourcents -> décimales
     # humidité absolue :
     Psat = FPsat(Tamb)
