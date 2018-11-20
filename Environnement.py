@@ -22,8 +22,8 @@ import scipy.constants as cste
 # 1) on définit d'abord les constantes que l'on va utiliser :
 
 T0     = 333.15          # température dont on connait la pression de saturation (60°C) [K]
-R      = cste.R           # constante des gaz parfaits [J/K]
-PATM   = cste.atm         # pression atmosphérique [Pa]
+R      = cste.R          # constante des gaz parfaits [J/K]
+PATM   = cste.atm        # pression atmosphérique [Pa]
 LAMBDA = 42440           # chaleur latente molaire de vaporisation de l'eau [J/mol]
 SIGMA  = cste.sigma      # constante de Stefan-Boltzmann [W/m²K⁴]
 
@@ -52,6 +52,7 @@ def environnement(Tamb=303.15, Esol=19.6, Texp=12, HR=70):
     Fd=10**4*Esol / (36*Texp)        #10**4 et 36 viennent de la conversion MJ -> J et h -> s
     # flux indirect :
     Tr=LAMBDA*Tamb / (LAMBDA - R*Tamb*math.log(HR))             #Tr est la température de rosée [K] et le log est un ln dans ce module
+    Tr-=273.15                                                  # passage de K à °C
     Tciel=Tamb*(0.711 + 0.0056*Tr + 7.3*10**(-5)*Tr**2)**0.25   #on néglige le cosinus car il est proche de 0
     Fi=SIGMA*Tciel**4
 
