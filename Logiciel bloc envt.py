@@ -24,7 +24,7 @@ T0     = 333.15          # température dont on connait la pression de saturatio
 R      = 8.314           # constante des gaz parfaits [J/K]
 PATM   = 101325          # pression atmosphérique [Pa]
 LAMBDA = 42440           # chaleur latente molaire de vaporisation de l'eau [J/mol]
-SIGMA  = 5.6704*10**(-9) # constante de Stefan-Boltzmann [W/m²K⁴]
+SIGMA  = 5.6704*10**(-8) # constante de Stefan-Boltzmann [W/m²K⁴]
 
 
 
