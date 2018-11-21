@@ -25,13 +25,14 @@ def main():
 
     # PRINT
     print("\n", "#" * 50, "\n", sep="")
-    print(  "\nFd =\t", Fd,
-            "\nFi =\t", Fi,
-            "\nP  =\t", P[0],
-            "\nTs =\t", P[1],
-            "\nTp =\t", P[2],
-            "\nFs =\t", P[3],
-            "\nFp =\t", P[4],
+    print(  "\nY =\t\t", Y, "kg d'eau par kg d'air sec",
+            "\nFd =\t", Fd, "W/m²",
+            "\nFi =\t", Fi, "W/m²",
+            "\nP  =\t", P[0], "W/m²",
+            "\nTs =\t", P[1], "K",
+            "\nTp =\t", P[2], "K",
+            "\nFs =\t", P[3], "W/m²",
+            "\nFp =\t", P[4], "W/m²",
             "\nRa =\t", P[5],
             "\nNu =\t", P[6],
             "\nh  =\t", P[7])
