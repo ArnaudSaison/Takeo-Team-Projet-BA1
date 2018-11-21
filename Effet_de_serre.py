@@ -7,8 +7,7 @@ import numpy as np
 import scipy.optimize as sp_op
 import scipy.constants as cste
 
-L = 0.8             # Dimensions de la boîte
-g = 9.80665         # accélération gravifique
+g = cste.g         # accélération gravifique
 sigma = cste.sigma  # constante de Stefan Boltzmann pour équation corps noir
 
 # Constantes :   sigma, g, v,        alpha,    Pr,    k,
@@ -19,7 +18,7 @@ constantes330 = (sigma, g, 1.851e-5, 2.616e-5, 0.708, 0.02821)
 constantes340 = (sigma, g, 1.951e-5, 2.821e-5, 0.707, 0.02888)
 
 
-def Bloc_effet_de_serre(T, Fd, Fi, c=constantes320, L=1):
+def Bloc_effet_de_serre(T, Fd, Fi, a, b, c=constantes320):
     """
     Caclule la puissance du capteur solaire en W/m^2.
 
@@ -28,11 +27,16 @@ def Bloc_effet_de_serre(T, Fd, Fi, c=constantes320, L=1):
     :param Fi: Flux solaire indirect
     :param c: constantes : sigma, g, v, alpha, Pr, k
     :param L: périmètre de la section de la boîte
+    :param a: longeur section
+    :param b:
     :return P: Puissance développée par la serre
     """
 
     # Constantes convection
     sigma, g, v, alpha, Pr, k, beta = c[0], c[1], c[2], c[3], c[4], c[5], (1 / T)
+
+    # Longueur carctéristique
+    L = 2 * a * b / (a + b)
 
     # Définition du système d'équations
     def sys(x):
@@ -55,25 +59,32 @@ def Bloc_effet_de_serre(T, Fd, Fi, c=constantes320, L=1):
         # Equations de a convection
         E[5] = (h * L / k) - Nu
         E[6] = ((g * beta * (((Tp + Ts) / 2) - T) * L ** 3) / (alpha * v)) - Ra
-        E[7] = (0.14 * (Ra ** (1 / 3)) * ((1 + 0.0107 * Pr) / (1 + 0.01 * Pr))) - Nu
+        E[7] = (0.14 * (Ra ** (1 / 3)) * ((1.0 + 0.0107 * Pr) / (1.0 + 0.01 * Pr))) - Nu
 
         return E
 
     # Matrice d'initialisation qui va servir de base pour trouver les racines du système
-    x0 = np.array([100, 300, 300, 400, 400, 1, 1, 4])
+    # x0 = np.array([100.0, 300.0, 300.0, 400.0, 400.0, 1.0, 1.0, 4.0])
+    x0 = np.array([100.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.0])
 
     # Calcul des racines du systèmes
     sol = sp_op.root(sys, x0)
 
     return sol.x
 
+"""
+##################################################################################################################
 
+PARTIE TEST
+
+##################################################################################################################
+"""
 # Partie de test :
 
 
 def imprimer(T, Fd, Fi, constantes):
     # Print de la puissance de cette serre
-    res = Bloc_effet_de_serre(T, Fd, Fi, constantes)
+    res = Bloc_effet_de_serre(T, Fd, Fi, 0.4, 0.02, constantes)
     print("P  =\t", res[0],
           "\nTs =\t", res[1],
           "\nTp =\t", res[2],
@@ -87,8 +98,8 @@ def imprimer(T, Fd, Fi, constantes):
 
 def test2(constantes):
     T = 65 + 273.15
-    Fd = 600
-    Fi = 200
+    Fd = 400
+    Fi = 400
 
     imprimer(T, Fd, Fi, constantes)
 
