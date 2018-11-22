@@ -1,0 +1,34 @@
+"""
+Entrées:
+La masse de l'aliment, l'humidité absolue ambiante
+
+Sorties:
+Le débit d'air
+
+But du programme:
+Ce programme nous permet de trouver le débit d'air nécessaire que notre séchoir à besoin.
+Ce débit d'air est très important, car il va réguler l'humidité de la machine.
+"""
+
+"""Cette définition permet de cacluler le débit d'air"""
+def debit_air():
+    Q = J/Dy
+    return Q
+
+"""Inputs"""
+Masse_aliment = float(input("La masse de l'aliment que vous souhaitez sécher en kg = "))
+Yamb = float(input("L'humidité absolue ambiante = "))
+Ymax = float(input("L'humidité absolue maximale = "))
+
+"""Données"""
+Masse_init_eau = 3 * Masse_aliment
+Masse_fin_eau = 0.1 * Masse_aliment
+D_masse = Masse_init_eau - Masse_fin_eau
+Dt = 28800 # Secondes
+
+"""Equations permettant de calculer par la suite le débit d'air"""
+J = (D_masse)/Dt
+Dy = Ymax - Yamb
+
+"""Impression de la valeur du débit d'air"""
+print("Le débit d'air = ", debit_air(), "Kg/s")
