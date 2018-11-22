@@ -10,8 +10,8 @@ Ce programme nous permet de trouver le débit d'air nécessaire que notre sécho
 Ce débit d'air est très important, car il va réguler l'humidité de la machine.
 """
 
-"""Cette définition permet de cacluler le débit d'air"""
-def debit_air():
+"""Cette définition permet de cacluler le débit d'air sec"""
+def debit_air_sec():
     Q = J/Dy
     return Q
 
@@ -26,9 +26,9 @@ Masse_fin_eau = 0.1 * Masse_aliment
 D_masse = Masse_init_eau - Masse_fin_eau
 Dt = 28800 # Secondes
 
-"""Equations permettant de calculer par la suite le débit d'air"""
+"""Equations permettant de calculer par la suite le débit d'air sec"""
 J = (D_masse)/Dt
 Dy = Ymax - Yamb
 
 """Impression de la valeur du débit d'air"""
-print("Le débit d'air = ", debit_air(), "Kg/s")
+print("Le débit d'air sec= ", debit_air_sec(), "Kg air sec/s")
