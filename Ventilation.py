@@ -13,7 +13,7 @@ Les inputs :
    - Temps de séchage souhaité                   Dt                 [heures]
 
 Les outputs :
-   - débit d'air sec                             Q                  [m³/s]
+   - débit d'air sec                             Q                  [kg d'air sec/s]
 """
 
 def Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Dt=16):
