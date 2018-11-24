@@ -1,52 +1,117 @@
 """
-CODE DU BLOC ENVIRONNEMENT
-  Légende : grandeur décrite - symbole utilisé dans le code - [unités]
-* Les inputs :
-   - énergie solaire reçue    - Esol - [MJ/m²]
-   - température ambiante     - Tamb - [K]
-   - temps d'exposition       - Texp - [h]
-   - humidité relative        - HR   - [adimensionnel] (exprimé en pourcents)
-* Les outputs :
-   - flux solaire direct      -  Fd  - [W/m²]
-   - flux solaire indirect    -  Fi  - [W/m²]
-   - humidité absolue         -  Y   - [adimensionnel]
+Takeo
+
+CODE DU BLOC EFFET DE SERRE
+
+     grandeur                 symbole     [unités]
+Les inputs :
+   - énergie solaire reçue    Esol        [MJ/m²]
+   - température ambiante     Tamb        [C°]
+   - temps d'exposition       Texp        [h]
+   - humidité relative        HR          [adimensionnel] (exprimé en pourcents)
+
+Les outputs :
+   - flux solaire direct      Fd         [W/m²]
+   - flux solaire indirect    Fi         [W/m²]
+   - humidité absolue         Y          [adimensionnel]
 """
 
 import math
 import scipy.constants as cste
 
-# 1) on définit d'abord les constantes que l'on va utiliser :
+# CONSTANTES
 
-T0 = 333.15         # température dont on connait la pression de saturation (60°C) [K]
-R = cste.R          # constante des gaz parfaits [J/K]
-PATM = cste.atm     # pression atmosphérique [Pa]
-LAMBDA = 42440      # chaleur latente molaire de vaporisation de l'eau [J/mol]
-SIGMA = cste.sigma  # constante de Stefan-Boltzmann [W/m²K⁴]
+# température dont on connait la pression de saturation (60°C) [K]
+T0 = 333.15
+# constante des gaz parfaits [J/K]
+R = cste.R
+# pression atmosphérique [Pa]
+PATM = cste.atm
+# chaleur latente molaire de vaporisation de l'eau [J/mol]
+LAMBDA = 42440
+# constante de Stefan-Boltzmann [W/m²K⁴]
+SIGMA = cste.sigma
 
 
-# 2) on définit ensuite les fonctions que l'on va utiliser
+"""
+Fonctions qui calculent le nombre d'heures dans une journée.
+"""
 
 
-# pression de saturation Psat en fonction de la température T :
+def time2min(time):
+    """Trasnforme l'heure en minutes"""
+    return time[0] * 60 + time[1]
+
+
+def min2time(min):
+    """Trasnforme un nombre de minutes en heures"""
+    hour = min // 60
+    min = min % 60
+    return (hour, min)
+
+
+def min2hours(temps):
+    """Converti un temps exprimé en heures et minutes vers un temps en heures"""
+    return temps[0] + temps[1] / 60
+
+
+def duree(debut, fin):
+    """Renvoie la durée entre les deux heures donneés"""
+    temps = time2min(fin) - time2min(debut)
+    if temps < 0:
+        temps += 24 * 60
+    return min2time(temps)
+
+
+def duree_journee(lever="6h30", coucher="18h30"):
+    """Calcule la durée d'une jounée à partir des heures de lever et de coucher du soleil."""
+    # Nettoyage et découpage des heures
+    lever = lever.replace(" ", "").split("h")
+    lever[0], lever[1] = float(lever[0]), float(lever[1])
+    coucher = coucher.replace(" ", "").split("h")
+    coucher[0], coucher[1] = float(coucher[0]), float(coucher[1])
+
+    # Calcul de la duree
+    temps = duree(lever, coucher)
+    temps = temps[0] + temps[1] / 60
+
+    return temps
+
+
+"""
+Fonctions du bloc environnement
+"""
+
 
 def FPsat(T):
+    """
+    Fonction qui calcule la pression de saturation Psat en fonction de la température T.
+    """
     if T == T0:
-        return 2 * 10 ** 4
+        res = 2 * 10 ** 4
+    else :
+        deltaT = 1 / T - 1 / T0  # [1/K]
+        exp = -LAMBDA * deltaT / R  # [adim]
 
-    deltaT = 1 / T - 1 / T0  # [1/K]
-    exp = -LAMBDA * deltaT / R  # [adim]
+        res = FPsat(T0) * math.exp(exp) # [Pa]
 
-    return FPsat(T0) * math.exp(exp)  # [Pa]
+    return res
 
 
 # on attribue des valeurs par défaut pour les grandeurs dans le cas où elles ne sont pas données (Tamb de 30°C, Esol de 19.6 MJ/m², HR de 70%)
 
-def Bloc_environnement(Tamb=303.15, Esol=20, Texp=12.0, HR=80.0):
-    HR = HR / 100  # passage pourcents -> décimales
+def flux_solaires(Tamb=303.15, Esol=20, Texp=12.0, HR=80.0):
+    """
+    Fonction qui calcule le flux solaire direct et indirect grâce à l'énegie solaire qui atteint le sol en une journée.
 
-    # humidité absolue :
-    Psat = FPsat(Tamb)
-    Y = 0.62 * HR * Psat / (PATM - Psat)  # 0.62 = Meau/Mair
+    :param Tamb: (float) température ambiante en degrés celsuis
+    :param Esol: (float) énergie solaire reçue au cours d'une journée complète
+    :param Texp: (float) temps que dure une journée en haures
+    :return:    - (float) Flux direct en W/m²
+                - (float) Flux indirect en W/m²
+    """
+    # passage pourcents -> décimales
+    HR = HR / 100
 
     # flux direct :
     Fd = 10 ** 4 * Esol / (36 * Texp)  # 10**4 et 36 viennent de la conversion MJ -> J et h -> s
@@ -58,19 +123,20 @@ def Bloc_environnement(Tamb=303.15, Esol=20, Texp=12.0, HR=80.0):
     Tciel = Tamb * (0.711 + 0.0056 * Tr + 7.3 * 10 ** (-5) * Tr ** 2) ** 0.25  # on néglige le cosinus car il est proche de 0
     Fi = SIGMA * Tciel ** 4
 
-    return Y, Fd, Fi
+    return Fd, Fi
 
 
-# 3) on peut enfin tester notre fonction :
-def test():
-    print("Inputs : ")
-    Tamb = float(input("Température ambiante [K]       : "))
-    Esol = float(input("Energie solaire [MJ/m²]        : "))
-    Texp = float(input("Temps d'exposition [h]         : "))
-    HR = float(input("Humidité relative en pourcents : "))
-    (Y, Fd, Fi) = Bloc_environnement(Tamb, Esol, Texp, HR)
-    print()
-    print("Outputs : ")
-    print("Humidité absolue : " + str(Y) + " kg d'eau par kg d'air sec")
-    print("Flux direct      : " + str(Fd) + " W/m²")
-    print("Flux indirect    : " + str(Fi) + " W/m²")
+def HRversY(HR, Tamb):
+    """
+    Fonction qui calcule l'humidité absolue à partir de l'humidité relative
+
+    :param HR: (float) humidété relative en pourcent (ex : HR = 80.0 est 80%)
+    :return: (float) humidité absolue en kg d'eau par kg de matière sèche
+    """
+    HR = HR / 100  # passage pourcents -> décimales
+
+    # humidité absolue :
+    Psat = FPsat(Tamb)
+    Y = 0.62 * HR * Psat / (PATM - Psat)  # 0.62 = Meau/Mair
+
+    return Y
