@@ -1,34 +1,36 @@
 """
-Entrées:
-La masse de l'aliment, l'humidité absolue ambiante
+Takeo
 
-Sorties:
-Le débit d'air
+CODE DU BLOC VENTILATION
 
-But du programme:
-Ce programme nous permet de trouver le débit d'air nécessaire que notre séchoir à besoin.
-Ce débit d'air est très important, car il va réguler l'humidité de la machine.
+     grandeur                                    symbole            [unités]
+Les inputs :
+   - Masse de l'aliment que l'on veut sécher     Masse_aliment      [kg]
+   - Masse d'eau par matière sèche initiale      Masse_epmsi        [kg d'eau par kg de matière sèche]
+   - Masse d'eau par matière sèche finale        Masse_epmsf        [kg d'eau par kg de matière sèche]
+   -                                             Yamb               []
+   -                                             Ymax               []
+   - Temps de séchage souhaité                   Dt                 [heures]
+
+Les outputs :
+   - débit d'air sec                             Q                  [m³/s]
 """
 
-"""Cette définition permet de cacluler le débit d'air sec"""
-def debit_air_sec():
-    Q = J/Dy
+def Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Dt=16):
+    """
+    Ce programme nous permet de trouver le débit d'air nécessaire à notre séchoir
+    Ce débit d'air est très important, car il va réguler l'humidité de la machine.
+    """
+    # Données
+    Masse_init_eau = Masse_epmsi * Masse_aliment
+    Masse_fin_eau = Masse_epmsf * Masse_aliment
+    D_masse = Masse_init_eau - Masse_fin_eau
+    Dt = Dt * 3600  # Conversion du temps en secondes
+
+    # Equations permettant de calculer par la suite le débit d'air sec
+    J = (D_masse) / Dt
+    Dy = Ymax - Yamb
+
+    Q = J / Dy
+
     return Q
-
-"""Inputs"""
-Masse_aliment = float(input("La masse de l'aliment que vous souhaitez sécher en kg = "))
-Yamb = float(input("L'humidité absolue ambiante = "))
-Ymax = float(input("L'humidité absolue maximale = "))
-
-"""Données"""
-Masse_init_eau = 3 * Masse_aliment
-Masse_fin_eau = 0.1 * Masse_aliment
-D_masse = Masse_init_eau - Masse_fin_eau
-Dt = 28800 # Secondes
-
-"""Equations permettant de calculer par la suite le débit d'air sec"""
-J = (D_masse)/Dt
-Dy = Ymax - Yamb
-
-"""Impression de la valeur du débit d'air"""
-print("Le débit d'air sec= ", debit_air_sec(), "Kg air sec/s")
