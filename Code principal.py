@@ -66,6 +66,7 @@ def userInputs():
     :return: toutes le valeurs des inputs dans l'odre suivant :
     Tfluide, a, b, Tamb, Esol, Texp, HR, Masse_aliment, Yamb, Ymax
     """
+    print("\n", "#" * 50, "\n", sep="")
     print("Partie Effet de serre :\n")
 
     Tfluide = inputIfDeci("T que l'on veut atteindre [C°] = ") + 273.15
@@ -77,9 +78,9 @@ def userInputs():
 
     Tamb = inputIfDeci("Température ambiante [C°] = ") + 273.15
     Esol = inputIfDeci("Energie solaire reçue au sol au cours d'une journée [MJ/m²] = ")
-    Temps_sol = inputIfDuree("Heure de lever du soleil = ",
-                             "Heure de coucher du soleil = ",
-                             "Echec de la conversion en duree. Veuillez réessayer.")
+    Temps_sol = inputIfDuree("Heure de lever du soleil (exemple : 18h30)= ",
+                             "Heure de coucher du soleil (exemple : 18h30)= ",
+                             "Echec de la conversion en duree. Veillez à bien formatter les heures. Veuillez réessayer.")
     HRamb = inputIfDeci("Humidité relative ambiante en pourcents = ")
 
     print("\n", "#" * 50, "\n", sep="")
@@ -88,6 +89,9 @@ def userInputs():
     Masse_aliment = inputIfDeci("Masse de l'aliment que vous souhaitez sécher [kg] = ")
     Masse_epmsi = inputIfDeci("Masse d'eau par kg de matière sèche initiale [kg] = ")
     Masse_epmsf = inputIfDeci("Masse d'eau par kg de matière sèche que l'on souhaite atteindre au final [kg] = ")
+
+    assert Masse_epmsi < Masse_epmsf, "Erreur : vous avez entré une masse d'eau finale dans l'aliment supérieure à la masse d'eau initiale !"
+
     Temps_sec = inputIfDeci("Temps de séchage souhaité [heures] = ")
     HRmax = inputIfDeci("Humidité relative maximale dans le séchoir en pourcents= ")
 
@@ -107,11 +111,11 @@ def main(mode=""):
         Esol = 19.6
         Temps_sol = 12
         HRamb = 80
-        Masse_aliment = .5
-        Masse_epmsf = 3
-        Masse_epmsi = .1
-        Temps_sec = 8
-        HRmax = 20
+        Masse_aliment = 20
+        Masse_epmsi = 3
+        Masse_epmsf = .1
+        Temps_sec = 12
+        HRmax = 30
 
     else:
         Tfluide, a, b, Tamb, Esol, Temps_sol, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax = userInputs()
@@ -145,4 +149,4 @@ def main(mode=""):
     return None
 
 
-main("test")
+main(input("> 'test' pour passer en mode test\n> touche Enter pour passer en mode input\n").lower())
