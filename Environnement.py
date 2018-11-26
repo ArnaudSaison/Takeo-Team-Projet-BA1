@@ -32,7 +32,6 @@ LAMBDA = 42440
 # constante de Stefan-Boltzmann [W/m²K⁴]
 SIGMA = cste.sigma
 
-
 """
 Fonctions qui calculent le nombre d'heures dans une journée.
 """
@@ -89,11 +88,11 @@ def FPsat(T):
     """
     if T == T0:
         res = 2 * 10 ** 4
-    else :
+    else:
         deltaT = 1 / T - 1 / T0  # [1/K]
         exp = -LAMBDA * deltaT / R  # [adim]
 
-        res = FPsat(T0) * math.exp(exp) # [Pa]
+        res = FPsat(T0) * math.exp(exp)  # [Pa]
 
     return res
 
