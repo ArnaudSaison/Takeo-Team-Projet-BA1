@@ -21,15 +21,15 @@ import numpy as np
 import scipy.optimize as sp_op
 import scipy.constants as cste
 
-g = cste.g          # accélération gravifique
-sigma = cste.sigma  # constante de Stefan Boltzmann pour équation corps noir
+g = cste.g  # accélération gravifique
+SIGMA = cste.sigma  # constante de Stefan Boltzmann pour équation corps noir
 
 # Constantes :   sigma, g, v,        alpha,    Pr,    k,
-constantes300 = (sigma, g, 1.578e-5, 2.213e-5, 0.713, 0.02623)
-constantes310 = (sigma, g, 1.659e-5, 2.340e-5, 0.709, 0.02684)
-constantes320 = (sigma, g, 1.754e-5, 2.476e-5, 0.708, 0.02753)
-constantes330 = (sigma, g, 1.851e-5, 2.616e-5, 0.708, 0.02821)
-constantes340 = (sigma, g, 1.951e-5, 2.821e-5, 0.707, 0.02888)
+constantes300 = (SIGMA, g, 1.578e-5, 2.213e-5, 0.713, 0.02623)
+constantes310 = (SIGMA, g, 1.659e-5, 2.340e-5, 0.709, 0.02684)
+constantes320 = (SIGMA, g, 1.754e-5, 2.476e-5, 0.708, 0.02753)
+constantes330 = (SIGMA, g, 1.851e-5, 2.616e-5, 0.708, 0.02821)
+constantes340 = (SIGMA, g, 1.951e-5, 2.821e-5, 0.707, 0.02888)
 
 
 def Bloc_effet_de_serre(T, Fd, Fi, a, b, c=constantes340):
@@ -70,10 +70,9 @@ def Bloc_effet_de_serre(T, Fd, Fi, a, b, c=constantes340):
 
     # Matrice d'initialisation qui va servir de base pour trouver les racines du système
     # x0 = np.array([100.0, 300.0, 300.0, 400.0, 400.0, 1.0, 1.0, 4.0])
-    x0 = np.array([100.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.0])
+    x0 = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 4.0])
 
     # Calcul des racines du systèmes
     sol = sp_op.root(sys, x0)
 
     return sol.x
-
