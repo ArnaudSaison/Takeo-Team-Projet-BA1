@@ -9,6 +9,30 @@ import Environnement as env
 import Ventilation as vent
 
 msg_erreur = "Valeur non valide, veuillez réessayer"
+rho = 1.177
+
+# Données de test
+def donnes():
+    """Fonction qui permet d'appeler des valeurs de test"""
+    Tfluide = 65 + 273.15
+    a = .4
+    b = .2
+    Tamb = 30 + 273.15
+    Esol = 19.6
+    Temps_sol = 12
+    HRamb = 80
+    Masse_aliment = .5
+    Masse_epmsi = 3
+    Masse_epmsf = .1
+    Temps_sec = 8
+    HRmax = 15
+
+    return Tfluide, a, b, Tamb, Esol, Temps_sol, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax
+
+
+def printline(largeur=75):
+    """Fonction qui imprime une ligne de séparation"""
+    print("\n", "#" * largeur, "\n", sep="")
 
 
 def inputIfDeci(msg, msg_erreur=msg_erreur):
@@ -66,14 +90,14 @@ def userInputs():
     :return: toutes le valeurs des inputs dans l'odre suivant :
     Tfluide, a, b, Tamb, Esol, Texp, HR, Masse_aliment, Yamb, Ymax
     """
-    print("\n", "#" * 50, "\n", sep="")
+    printline()
     print("Partie Effet de serre :\n")
 
     Tfluide = inputIfDeci("T que l'on veut atteindre [C°] = ") + 273.15
     a = inputIfDeci("Longueur de la section de la boîte [m] = ")
     b = inputIfDeci("Hauteur de la section de la boîte [m] = ")
 
-    print("\n", "#" * 50, "\n", sep="")
+    printline()
     print("Partie Environnement :\n")
 
     Tamb = inputIfDeci("Température ambiante [C°] = ") + 273.15
@@ -83,7 +107,7 @@ def userInputs():
                              "Echec de la conversion en duree. Veillez à bien formatter les heures. Veuillez réessayer.")
     HRamb = inputIfDeci("Humidité relative ambiante en pourcents = ")
 
-    print("\n", "#" * 50, "\n", sep="")
+    printline()
     print("Partie Ventilation :\n")
 
     Masse_aliment = inputIfDeci("Masse de l'aliment que vous souhaitez sécher [kg] = ")
@@ -98,24 +122,13 @@ def userInputs():
     return Tfluide, a, b, Tamb, Esol, Temps_sol, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax
 
 
-def main(mode=""):
+def main(mode="", donnes = ):
     """
     Fonction principale qui exécute tout le code.
     """
     # INPUTS
     if mode == "test":
-        Tfluide = 65 + 273.15
-        a = .4
-        b = .2
-        Tamb = 30 + 273.15
-        Esol = 19.6
-        Temps_sol = 12
-        HRamb = 80
-        Masse_aliment = 20
-        Masse_epmsi = 3
-        Masse_epmsf = .1
-        Temps_sec = 12
-        HRmax = 30
+        Tfluide, a, b, Tamb, Esol, Temps_sol, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax = donnes()
 
     else:
         Tfluide, a, b, Tamb, Esol, Temps_sol, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax = userInputs()
@@ -128,11 +141,15 @@ def main(mode=""):
     Q = vent.Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Temps_sec)
     P = eds.Bloc_effet_de_serre(Tfluide, Fd, Fi, a, b)
 
+    D = Q / rho
+
     # PRINT
-    print("\n", "#" * 50, "\n", sep="")
+    printline()
     print("OUTPUTS :")
 
-    print("\nQ =\t\t", Q, "m³/s",
+    print("\nQ =\t\t", Q, "kg/s",
+          "\nDébit =\t", D, "m³/s",
+          "\nDébit =\t", D * 3600, "m³/h",
           "\nYamb =\t", Yamb, "kg d'eau par kg d'air sec",
           "\nYmax =\t", Ymax, "kg d'eau par kg d'air sec",
           "\nFd =\t", Fd, "W/m²",
