@@ -61,7 +61,7 @@ def Bloc_effet_de_serre(T, Fd, Fi, a, b, c=constantes340):
         E[3] = P + Fp - Fd - Fi
         E[4] = Fs + h * (Ts - T) - Fd - Fp
 
-        # Equations de a convection
+        # Equations de la convection
         E[5] = (h * L / k) - Nu
         E[6] = ((g * beta * (((Tp + Ts) / 2) - T) * L ** 3) / (alpha * v)) - Ra
         E[7] = (0.14 * (Ra ** (1 / 3)) * ((1.0 + 0.0107 * Pr) / (1.0 + 0.01 * Pr))) - Nu

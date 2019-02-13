@@ -36,4 +36,4 @@ def Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Dt=16)
     # Calcul du débit d'air
     Q = J / Dy
 
-    return Q
+    return Q, J
