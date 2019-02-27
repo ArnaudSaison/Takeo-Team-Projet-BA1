@@ -16,24 +16,32 @@ rho = 1.177
 DHvap = 2346.2e3  # J / kg
 Cairsec = 1009  # J / (kg * K)
 
-
 # Données de test
-def donnees():
+def donnees(mode=1):
     """Fonction qui permet d'appeler des valeurs de test"""
     Tfluide = 65 + 273.15
-    a = .3
+    a = .35
     b = .2
     Tamb = 30 + 273.15
     Esol = 19.6
     Temps_sol = 12
-    HRamb = 80
+    HRamb = 46
     Masse_aliment = .5
     Masse_epmsi = 3
     Masse_epmsf = .1
-    Temps_sec = 12
+    Temps_sec = 5
     HRmax = 20
 
-    return Tfluide, a, b, Tamb, Esol, Temps_sol, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax
+    if mode == 1:
+        Fd = 900
+        Fi = 100
+
+
+    else :
+        # Calcul des flux solaires
+        Fd, Fi = env.flux_solaires(Tamb, Esol, Temps_sol, HRamb)
+
+    return Tfluide, a, b, Tamb, Fd, Fi, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax
 
 
 def printline(largeur=75):
@@ -188,17 +196,22 @@ def dimensionnement(P, l, Q, T, Tamb, J):
     return L
 
 
-def main(mode="labo", donnees_m=donnees()):
+def main(mode="labo"):
     """
     Fonction principale qui exécute tout le code.
     """
     print("mode : ", mode)
 
     # INPUTS
-    if mode == "test":
-        Tfluide, a, b, Tamb, Fd, Fi, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax = donnees_m
+    if "test" in mode:
+        if mode == "test":
+            Tfluide, a, b, Tamb, Fd, Fi, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax = donnees(0)
 
-    if mode == "labo":
+        elif mode == "test1":
+            Tfluide, a, b, Tamb, Fd, Fi, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax = donnees(1)
+
+
+    elif mode == "labo":
         Tfluide, a, b, Tamb, Fd, Fi, HRamb, Masse_aliment, Masse_epmsi, Masse_epmsf, Temps_sec, HRmax = labInputs()
 
     else:
@@ -242,4 +255,5 @@ def main(mode="labo", donnees_m=donnees()):
 
 
 if __name__ == '__main__':
-    main()
+    m = input("mode : ")
+    main(m)

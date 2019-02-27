@@ -136,6 +136,7 @@ def HRversY(HR, Tamb):
 
     # humidité absolue :
     Psat = FPsat(Tamb)
-    Y = 0.62 * HR * Psat / (PATM - Psat)  # 0.62 = Meau/Mair
+    Y = HR * 0.62 * Psat / (PATM - Psat)  # 0.62 = Meau/Mair
+
 
     return Y
