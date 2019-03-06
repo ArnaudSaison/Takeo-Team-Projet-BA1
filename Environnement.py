@@ -129,7 +129,7 @@ def flux_solaires(Tamb=303.15, Esol=19.6, Texp=12.0, HR=80.0):
     return Fd, Fi
 
 
-def HRversY(HR, Tamb):
+def HRversY(HR, T):
     """
     Fonction qui calcule l'humidité absolue à partir de l'humidité relative
 
@@ -139,7 +139,7 @@ def HRversY(HR, Tamb):
     HR = HR / 100  # passage pourcents -> décimales
 
     # humidité absolue :
-    Psat = FPsat(Tamb)
+    Psat = FPsat(T)
     Y = HR * 0.62 * Psat / (PATM - Psat)  # 0.62 = Meau/Mair
 
 
