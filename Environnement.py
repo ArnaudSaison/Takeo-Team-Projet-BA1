@@ -53,12 +53,16 @@ def min2hours(temps):
     """Converti un temps exprimé en heures et minutes vers un temps en heures"""
     return temps[0] + temps[1] / 60
 
+def min2sec(min):
+    return min * 60
+
 
 def duree(debut, fin):
     """Renvoie la durée entre les deux heures donneés"""
     temps = time2min(fin) - time2min(debut)
     if temps < 0:
         temps += 24 * 60
+
     return min2time(temps)
 
 
@@ -90,16 +94,16 @@ def FPsat(T):
         res = 2 * 10 ** 4
     else:
         deltaT = 1 / T - 1 / T0  # [1/K]
-        exp = -LAMBDA * deltaT / R  # [adim]
+        expo = -LAMBDA * deltaT / R  # [adim]
 
-        res = FPsat(T0) * math.exp(exp)  # [Pa]
+        res = FPsat(T0) * math.exp(expo)  # [Pa]
 
     return res
 
 
-# on attribue des valeurs par défaut pour les grandeurs dans le cas où elles ne sont pas données (Tamb de 30°C, Esol de 19.6 MJ/m², HR de 70%)
+# on attribue des valeurs par défaut pour les grandeurs dans le cas où elles ne sont pas données (Tamb de 30°C, Esol de 19.6 MJ/m², HR de 80%)
 
-def flux_solaires(Tamb=303.15, Esol=20, Texp=12.0, HR=80.0):
+def flux_solaires(Tamb=303.15, Esol=19.6, Texp=12.0, HR=80.0):
     """
     Fonction qui calcule le flux solaire direct et indirect grâce à l'énegie solaire qui atteint le sol en une journée.
 

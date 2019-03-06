@@ -16,16 +16,17 @@ rho = 1.177
 DHvap = 2346.2e3  # J / kg
 Cairsec = 1009  # J / (kg * K)
 
+
 # Données de test
 def donnees(mode=1):
     """Fonction qui permet d'appeler des valeurs de test"""
     Tfluide = 65 + 273.15
-    a = .35
-    b = .2
-    Tamb = 30 + 273.15
+    a = .30
+    b = .20
+    Tamb = 20 + 273.15
     Esol = 19.6
     Temps_sol = 12
-    HRamb = 46
+    HRamb = 57
     Masse_aliment = .5
     Masse_epmsi = 3
     Masse_epmsf = .1
@@ -111,7 +112,7 @@ def userInputs():
     a = inputIfDeci("Longueur de la section de la boîte [m] = ")
     b = inputIfDeci("Hauteur de la section de la boîte [m] = ")
 
-    # Environnement
+    # Environnement : température et humidité ambiante, temps d'ensoleillement et énergie totale captée en une journée
     printline()
     print("Partie Environnement :\n")
 
@@ -200,7 +201,6 @@ def main(mode="labo"):
     """
     Fonction principale qui exécute tout le code.
     """
-    print("mode : ", mode)
 
     # INPUTS
     if "test" in mode:
@@ -219,7 +219,7 @@ def main(mode="labo"):
 
     # OUPUTS
     Yamb = env.HRversY(HRamb, Tamb)
-    Ymax = env.HRversY(HRmax, Tamb)
+    Ymax = env.HRversY(HRmax, Tfluide)
 
     Q, J = vent.Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Temps_sec)
     P = eds.Bloc_effet_de_serre(Tfluide, Fd, Fi, a, b)
@@ -230,7 +230,7 @@ def main(mode="labo"):
 
     # PRINT
     printline()
-    print("OUTPUTS :")
+    print("Résultats :")
 
     print("\nL =\t\t", round(L, 3), "m",
           "\nJ =\t\t", round(J, 6), "kg/s",
@@ -238,6 +238,7 @@ def main(mode="labo"):
           "\nDébit =\t", round(D, 6), "m³/s",
           "\nDébit =\t", round(D * 60, 6), "m³/min",
           "\nDébit =\t", round(D * 3600, 3), "m³/h",
+          "\nDébit =\t", round(D / (0.04**2 * 3.1416), 3), "m/s",
           "\nYamb =\t", round(Yamb, 6), "kg d'eau par kg d'air sec",
           "\nYmax =\t", round(Ymax, 6), "kg d'eau par kg d'air sec",
           "\nFd =\t", round(Fd, 3), "W/m²",
@@ -247,13 +248,14 @@ def main(mode="labo"):
           "\nTp =\t", round(P[2], 3), "K",
           "\nFs =\t", round(P[3], 3), "W/m²",
           "\nFp =\t", round(P[4], 3), "W/m²",
-          "\nRa =\t", round(P[5], 3),
+          "\nRa =\t", int(P[5]),
+          "\nRa / 10^7 =\t", round(P[5] / 10**7, 2), "=>", (P[5] / 10**7) < 10,
           "\nNu =\t", round(P[6], 3),
-          "\nh  =\t", round(P[7], 3))
+          "\nh  =\t", round(P[7], 2))
 
     return None
 
 
 if __name__ == '__main__':
-    m = input("mode : ")
+    m = input("\n\nmode (pour utiliser un mode sépacial : [test / test1 / labo ], sinon appuyez sur ENTER) : ")
     main(m)

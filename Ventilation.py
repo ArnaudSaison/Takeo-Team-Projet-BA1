@@ -10,14 +10,14 @@ Les inputs :
    - Masse d'eau par matière sèche finale        Masse_epmsf        [kg d'eau par kg de matière sèche]
    -                                             Yamb               []
    -                                             Ymax               []
-   - Temps de séchage souhaité                   Dt                 [heures]
+   - Temps de séchage souhaité                   Dt                 [secondes]
 
 Les outputs :
    - débit d'air sec                             Q                  [kg d'air sec/s]
 """
 
 
-def Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Dt=16):
+def Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Dt=16*3600):
     """
     Ce programme nous permet de trouver le débit d'air nécessaire à notre séchoir
     Ce débit d'air est très important, car il va réguler l'humidité de la machine.
@@ -31,9 +31,9 @@ def Bloc_ventilation(Masse_aliment, Masse_epmsi, Masse_epmsf, Yamb, Ymax, Dt=16)
 
     # Equations permettant de calculer par la suite le débit d'air sec
     J = D_masse / Dt
-    Dy = Yamb - Ymax
+    Dy = Ymax - Yamb
 
     # Calcul du débit d'air
-    Q_max = J / Dy
+    Q_min = J / Dy
 
-    return Q_max, J
+    return Q_min, J
