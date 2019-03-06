@@ -26,7 +26,7 @@ def donnees(mode=1):
     Tamb = 20 + 273.15
     Esol = 19.6
     Temps_sol = 12
-    HRamb = 57
+    HRamb = 50
     Masse_aliment = .5
     Masse_epmsi = 3
     Masse_epmsf = .1
@@ -232,13 +232,13 @@ def main(mode="labo"):
     printline()
     print("Résultats :")
 
-    print("\nL =\t\t", round(L, 3), "m",
+    print("\u001b[1;32m" + "\nLongueur =\t", round(L, 2), "m" + "\u001b[0m",
           "\nJ =\t\t", round(J, 6), "kg/s",
           "\nQ =\t\t", round(Q, 6), "kg/s",
-          "\nDébit =\t", round(D, 6), "m³/s",
+          "\u001b[1;32m" + "\nDébit =\t", round(D, 6), "m³/s",
           "\nDébit =\t", round(D * 60, 6), "m³/min",
           "\nDébit =\t", round(D * 3600, 3), "m³/h",
-          "\nDébit =\t", round(D / (0.04**2 * 3.1416), 3), "m/s",
+          "\nDébit =\t", round(D / (0.04**2 * 3.1416), 3), "m/s (pour 4cm de dimaètre)" + "\u001b[0m",
           "\nYamb =\t", round(Yamb, 6), "kg d'eau par kg d'air sec",
           "\nYmax =\t", round(Ymax, 6), "kg d'eau par kg d'air sec",
           "\nFd =\t", round(Fd, 3), "W/m²",
@@ -249,7 +249,7 @@ def main(mode="labo"):
           "\nFs =\t", round(P[3], 3), "W/m²",
           "\nFp =\t", round(P[4], 3), "W/m²",
           "\nRa =\t", int(P[5]),
-          "\nRa / 10^7 =\t", round(P[5] / 10**7, 2), "=>", (P[5] / 10**7) < 10,
+          "\u001b[1;35m" + "\nRa / 10^7 =", round(P[5] / 10**7, 2), "=>", 0.1 < (P[5] / 10**7) < 10, "\u001b[0m",
           "\nNu =\t", round(P[6], 3),
           "\nh  =\t", round(P[7], 2))
 
