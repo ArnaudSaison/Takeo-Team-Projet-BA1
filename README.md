@@ -1,5 +1,6 @@
 # Pepper Challenge : Groupe 17 - Takeo
-**Auteurs :** Arnaud Saison, Michaël Feldman, Hind Bakkali Tahiri, Younes Bouhjar, Idil Ari, Joshua Nicdao Blanco
+**Auteurs :** *Arnaud Saison, Michaël Feldman, Hind Bakkali Tahiri, Younes Bouhjar, Idil Ari, Joshua Nicdao Blanco*
+
 Le logiciel a été créé sur base du contenu du rapport. Merci de s'y référer pour toute justification apporfondie.
 ## Utilisation du logiciel
 - Exécutez le fichier *Code principal.py*
