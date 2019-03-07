@@ -17,15 +17,14 @@ DHvap = 2346.2e3  # J / kg
 Cairsec = 1009  # J / (kg * K)
 
 
+# Code pour formatter l'affichage
 def printline(largeur=75):
     """Fonction qui imprime une ligne de séparation"""
-    print(format("\n" + "#" * largeur, "bleu"))
+    print(format("\n" + "#" * largeur, "gras"))
 
 
 def format(s, c="rouge"):
-    """
-    Fonction qui met un texte dans le format demandé
-    """
+    """Fonction qui met un texte dans le format demandé"""
     dico_styles = {"reset": "\u001b[0m", "erreur": "\u001b[31m", "gras": "\u001b[1m", "blanc": "\u001b[30;1m", "vert": "\u001b[32m",
                    "bleu": "\u001b[34m", "rouge": "\u001b[31m"}
     assert c in dico_styles
@@ -37,11 +36,11 @@ def donnees(mode=1):
     """Fonction qui permet d'appeler des valeurs de test"""
     Tfluide = 65 + 273.15
     a = .30
-    b = .2
+    b = .20
     Tamb = 20 + 273.15
     Esol = 19.6
     Temps_sol = 12
-    HRamb = 50
+    HRamb = 45
     Masse_aliment = .5
     Masse_epmsi = 3
     Masse_epmsf = .1
@@ -243,21 +242,21 @@ def main(mode="labo"):
     print(format("► Résultats :", "gras"))
 
     print("\u001b[1;32m" + "\nLongueur =", round(L, 2), "m" + "\u001b[0m",
-          "\nJ =\t\t", round(J, 6), "kg/s",
-          "\nQ =\t\t", round(Q, 6), "kg/s",
+          "\nJ =\t", round(J, 6), "kg/s",
+          "\nQ =\t", round(Q, 6), "kg/s",
           "\u001b[1;32m" + "\nDébit =\t", round(D, 6), "m³/s",
           "\nDébit =\t", round(D * 60, 6), "m³/min",
           "\nDébit =\t", round(D * 3600, 3), "m³/h",
           "\nDébit =\t", round(D / (0.04 ** 2 * 3.1416), 3), "m/s (pour 4cm de dimaètre)" + "\u001b[0m",
           "\nYamb =\t", round(Yamb, 6), "kg d'eau par kg d'air sec",
           "\nYmax =\t", round(Ymax, 6), "kg d'eau par kg d'air sec",
-          "\nFd =\t", round(Fd, 3), "W/m²",
-          "\nFi =\t", round(Fi, 3), "W/m²",
-          "\nP  =\t", round(P[0], 3), "W/m²",
-          "\nTs =\t", round(P[1], 3), "K",
-          "\nTp =\t", round(P[2], 3), "K",
-          "\nFs =\t", round(P[3], 3), "W/m²",
-          "\nFp =\t", round(P[4], 3), "W/m²",
+          "\nFd =\t", round(Fd, 1), "W/m²",
+          "\nFi =\t", round(Fi, 1), "W/m²",
+          "\nP  =\t", round(P[0], 1), "W/m²",
+          "\nTs =\t", round(P[1], 1), "K",
+          "\nTp =\t", round(P[2], 1), "K",
+          "\nFs =\t", round(P[3], 1), "W/m²",
+          "\nFp =\t", round(P[4], 1), "W/m²",
           "\nRa =\t", int(P[5]),
           "\nRa / 10^7 =", round(P[5] / 10 ** 7, 2),
           "\u001b[1;35m" + "\nValidité des corrélations :", 10 ** 7 < P[5], "\u001b[0m",
@@ -268,14 +267,20 @@ def main(mode="labo"):
 
 
 if __name__ == '__main__':
-    print("""\nChoisissez le mode de fonctionnement du logiciel :
+    # Impression des instructions
+    printline()
+    print("""Choisissez le mode de fonctionnement du logiciel :
     - test : calcul classique des flux solaires et données issues de la section \"données\" du code
     - test1 : toutes les données, y compris les flux solaires, sont à entrer dans la section \"données\" du code
     - labo : vous entrez directements les valeurs, y compris celles de flux solaire
     - appuyez sur ENTER pour utiliser le logiciel en mode classique. Vous devrez alors entrer toutes les données de terrain.""")
+
+    # input du mode de fonctionnement
     m = input("\n\nmode (pour utiliser un mode sépacial : [test / test1 / labo ], sinon appuyez sur ENTER) : ")
     if m != "labo" and m != "test" and m != "test1":
         m = "terrain"
 
     print("\nmode activé :", format(m, "vert"))
+
+    # Exécution du programme
     main(m)
