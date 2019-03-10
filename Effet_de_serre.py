@@ -13,7 +13,7 @@ Les inputs :
    - hauteur de la section                                  b       [m]
 
 Les outputs :
-   - (list)     Puissance développée par la serre :         Fd      [W/m²]
+   - (list)     Puissance développée par la serre :
    P, Ts, Tp, Fs, Fp (puissance, température au sol, température du plastique, rayonnement du sol, rayonnement du plastique)
 """
 
@@ -75,4 +75,6 @@ def Bloc_effet_de_serre(T, Fd, Fi, a, b, c=constantes340):
     # Calcul des racines du systèmes
     sol = sp_op.root(sys, x0)
 
-    return sol.x
+    # print("\n\n\n", sol, "\n\n\n")
+
+    return sol.x, sol.success

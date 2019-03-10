@@ -7,7 +7,7 @@ CODE DU BLOC EFFET DE SERRE
 Les inputs :
    - énergie solaire reçue    Esol        [MJ/m²]
    - température ambiante     Tamb        [C°]
-   - temps d'exposition       Texp        [h]
+   - temps d'exposition       Texp        [heures]
    - humidité relative        HR          [adimensionnel] (exprimé en pourcents)
 
 Les outputs :
@@ -120,13 +120,22 @@ def flux_solaires(Tamb=303.15, Esol=19.6, Texp=12.0, HR=80.0):
     Fd = 10 ** 4 * Esol / (36 * Texp)  # 10**4 et 36 viennent de la conversion MJ -> J et h -> s
 
     # flux indirect :
+    Fi = flux_indirect(Tamb, HR)
+
+    return Fd, Fi
+
+
+def flux_indirect(Tamb, HR):
+    HR /= 100
+
+    # flux indirect :
     Tr = LAMBDA * Tamb / (LAMBDA - R * Tamb * math.log(HR))  # Tr est la température de rosée [K] et le log est un ln dans ce module
 
     Tr -= 273.15  # passage de K à °C
     Tciel = Tamb * (0.711 + 0.0056 * Tr + 7.3 * 10 ** (-5) * Tr ** 2) ** 0.25  # on néglige le cosinus car il est proche de 0
     Fi = SIGMA * Tciel ** 4
 
-    return Fd, Fi
+    return Fi
 
 
 def HRversY(HR, T):

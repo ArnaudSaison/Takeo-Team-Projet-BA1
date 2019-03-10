@@ -3,7 +3,7 @@
 
 Le logiciel a été créé sur base du contenu du rapport. Merci de s'y référer pour toute justification apporfondie.
 ## Utilisation du logiciel
-- Exécutez le fichier *Code principal.py*
+- Exécutez le fichier *logicielgroupe17.py*
 - Vous pouvez exécutez le code dans n'importe quelle console python 3.
 - Le programme nécessite [l'installation des paquets scipy](https://www.scipy.org/install.html)
 - Le programme dispose de quatre modes de fonctionnemnet détaillés lors du lancement de celui-ci, veillez à tuiliser le bon.
